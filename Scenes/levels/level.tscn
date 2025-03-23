@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://cy1p4i1hfud83"]
+[gd_scene load_steps=7 format=3 uid="uid://cy1p4i1hfud83"]
 
 [ext_resource type="PackedScene" uid="uid://c85jepr62iehk" path="res://Scenes/entities/player/player.tscn" id="1_57gys"]
 
@@ -19,6 +19,9 @@ glow_enabled = true
 [sub_resource type="BoxShape3D" id="BoxShape3D_vc512"]
 size = Vector3(40, 0.5, 40)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_y755e"]
+size = Vector3(10, 10, 1)
+
 [node name="Level" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -38,8 +41,16 @@ shadow_enabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.251, 0)
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Environment/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0367463, -9.53674e-07, -0.0859519)
 size = Vector3(40, 0.5, 40)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/StaticBody3D"]
 shape = SubResource("BoxShape3D_vc512")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7.66268)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Environment/StaticBody3D2"]
+size = Vector3(10, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/StaticBody3D2"]
+shape = SubResource("BoxShape3D_y755e")
