@@ -11,12 +11,21 @@ extends CharacterBody3D
 
 @export var base_speed := 4.0
 @export var run_speed := 6.0
+@export var defend_speed := 2.0
 
 @onready var camera = $CameraController/Camera3D
 
 @onready var skin = $GodetteSkin
 
 var movement_input := Vector2.ZERO
+var defend := false:
+	set(value):
+		if not defend and value:
+			skin.defend(true)
+		if defend and not value:
+			skin.defend(false)
+		defend = value
+var weapon_active := false
 
 func _physics_process(delta: float) -> void:
 	move_logic(delta)
@@ -32,6 +41,7 @@ func move_logic(delta) -> void:
 	
 	if movement_input != Vector2.ZERO:
 		var speed = run_speed if is_running else base_speed
+		speed = defend_speed if defend else speed
 		
 		vel_2d += movement_input * speed * delta
 		vel_2d = vel_2d.limit_length(speed)
@@ -58,5 +68,17 @@ func jump_logic(delta) -> void:
 	
 
 func ability_logic() -> void:
+	#actual attack
 	if Input.is_action_just_pressed("ability"):
-		skin.attack()
+		if weapon_active:
+			skin.attack()
+		else:
+			skin.cast_spell()
+		
+	#defend
+	defend = Input.is_action_pressed("block")
+	
+	#switch weapon/magic
+	if Input.is_action_just_pressed('switch weapon') and not skin.attacking:
+		weapon_active = not weapon_active
+		skin.switch_weapon(weapon_active)
